@@ -1,0 +1,6 @@
+add-tp-delay: false
+tp-delay: 5
+
+home-limit: 5
+
+debug-mode: true

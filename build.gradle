@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.kasperskyy01.home'
+version = '1.0'
+
+
+repositories {
+  maven {
+    name = 'papermc'
+    url = 'https://repo.papermc.io/repository/maven-public/'
+  }
+}
+
+dependencies {
+  compileOnly 'io.papermc.paper:paper-api:1.21.5-R0.1-SNAPSHOT'
+}
+
+// Exclusion part
+jar {
+sourceSets {
+    main {
+        java {
+            exclude '**/old/**'  // All .java files in old/
+            exclude '**/oldcode/**'
+        }
+    }
+  }
+}
+
+processResources {
+    exclude '**/old/**'
+    exclude '**/oldcode/**'
+}
+
+tasks.jar {
+    exclude '**/old/**'
+    exclude '**/oldcode/**'
+}

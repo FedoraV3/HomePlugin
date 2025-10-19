@@ -1,0 +1,41 @@
+name: HomePlugin
+main: com.kasperskyy01.home.HomePlugin
+version: 1.0.0
+api-version: 1.21.5
+authors:
+  - kasperskyy01
+description: "A simple home management plugin"
+
+commands:
+  home:
+    description: "Teleport to a saved home"
+    usage: "/home [name]"
+    permission: home.use
+    aliases: [tphome]
+  sethome:
+    description: "Set a home at your current location"
+    usage: "/sethome <name>"
+    permission: home.sethome
+  delhome:
+    description: "Delete a saved home"
+    usage: "/delhome <name>"
+    permission: home.delhome
+  listhomes:
+    description: "List your saved homes"
+    usage: "/listhomes"
+    permission: home.list
+
+permissions:
+  home.use:
+    description: "Allows teleporting to homes"
+    default: true
+  home.sethome:
+    description: "Allows creating homes"
+    default: true
+  home.delhome:
+    description: "Allows deleting homes"
+    default: op
+  home.list:
+    description: "Allows listing homes"
+    default: true
+
