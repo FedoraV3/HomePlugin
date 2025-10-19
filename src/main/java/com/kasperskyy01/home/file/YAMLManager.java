@@ -27,12 +27,13 @@ public class YAMLManager {
         File file = new File(instance.getDataFolder(), "homes.yml");
         FileConfiguration data = YamlConfiguration.loadConfiguration(file);
 
+        // TODO: Move this somewhere so other modules can use this function
         // Check for home limit
-        int home = data.getKeys(false).size();
-        if (home > instance.getConfig().getInt("home-limit") - 1 && data != null) {
-            player.sendMessage("You have the maximum limit of homes!");
-            return;
-        }
+        // int home = data.getKeys(false).size();
+        // if (home > instance.getConfig().getInt("home-limit") - 1 && data != null) {
+        //     player.sendMessage("You have the maximum limit of homes!");
+        //     return;
+        // }
 
         // Iterate over the list to set
         for (String i : list.keySet()) {

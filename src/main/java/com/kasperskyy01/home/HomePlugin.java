@@ -10,7 +10,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import com.kasperskyy01.home.file.YAMLManager;
+import com.kasperskyy01.home.player.playerJoined;
 
+// TODO: Check for how many houses the player has in a seperate file (Call it: getHomeNumbers)
 public class HomePlugin extends JavaPlugin {
     BukkitScheduler scheduler = Bukkit.getScheduler();
     private File customConfigFile;
@@ -46,7 +48,8 @@ public class HomePlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         getLogger().info("HomePlugin has been enabled!");
-
+        // Register events :DDDDDDD
+        getServer().getPluginManager().registerEvents(new playerJoined(), this);
 
         // initizihaizlizetion of files
         HomeYML();
