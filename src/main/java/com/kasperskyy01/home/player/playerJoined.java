@@ -22,5 +22,9 @@ public class playerJoined implements Listener {
         
         // Register player to the YAML File
         instance.YMLMgr.WriteToYAML(joined, toSet);
+
+        if (instance.getConfig().getBoolean("debug-mode")) {
+            instance.getLogger().info("Found player and wrote UUID to file");
+        }
     }
 }

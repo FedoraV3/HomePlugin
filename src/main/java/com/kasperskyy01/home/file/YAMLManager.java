@@ -6,7 +6,6 @@ import java.util.HashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 
@@ -22,10 +21,9 @@ public class YAMLManager {
 
         // Scheduler Stuff
         BukkitScheduler scheduler = Bukkit.getScheduler();
-
+ 
         // Grab YML File
-        File file = new File(instance.getDataFolder(), "homes.yml");
-        FileConfiguration data = YamlConfiguration.loadConfiguration(file);
+        FileConfiguration data = instance.getHomeYML();
 
         // TODO: Move this somewhere so other modules can use this function
         // Check for home limit
@@ -53,5 +51,20 @@ public class YAMLManager {
         });
 
         // Done
+    }
+
+    public boolean playerAtHomeLimit(Player player) {
+        final HomePlugin instance = HomePlugin.getPlugin(HomePlugin.class);
+        String uuid = player.getUniqueId().toString();
+
+        FileConfiguration data = instance.getHomeYML();
+        int amountOfHomes = data.getConfigurationSection("homes." + uuid).getKeys(false).size();
+
+        if (amountOfHomes > instance.getConfig().getInt("home-limit") - 1) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 }

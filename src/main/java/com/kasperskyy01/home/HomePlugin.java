@@ -24,7 +24,14 @@ public class HomePlugin extends JavaPlugin {
         return this.customConfig;
     }
 
-    public void HomeYML() {
+
+    @Override
+    public void onEnable() {
+        getLogger().info("HomePlugin has been enabled!");
+        // Register events :DDDDDDD
+        getServer().getPluginManager().registerEvents(new playerJoined(), this);
+
+        // initizihaizlizetion of files
         customConfigFile = new File(getDataFolder(), "homes.yml");
 
         if (customConfigFile.exists()) {
@@ -42,17 +49,6 @@ public class HomePlugin extends JavaPlugin {
             }
             customConfig = YamlConfiguration.loadConfiguration(customConfigFile);
         }
-    }
-
-
-    @Override
-    public void onEnable() {
-        getLogger().info("HomePlugin has been enabled!");
-        // Register events :DDDDDDD
-        getServer().getPluginManager().registerEvents(new playerJoined(), this);
-
-        // initizihaizlizetion of files
-        HomeYML();
 
         // Class initizihaizlizetion
         this.YMLMgr = new YAMLManager();

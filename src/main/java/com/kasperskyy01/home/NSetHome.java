@@ -15,17 +15,22 @@ public class NSetHome implements CommandExecutor {
         if (sender instanceof Player) {
             final HomePlugin instance = HomePlugin.getPlugin(HomePlugin.class);
             Player player = Bukkit.getPlayer(sender.getName());
-            String uuid = player.getUniqueId().toString();
-            String path = "homes." + uuid + "." + args[0];
-
-            toSet.put(path + ".world", player.getWorld().getName());
-            toSet.put(path + ".x", player.getX());
-            toSet.put(path + ".y", player.getY());
-            toSet.put(path + ".z", player.getZ());
             
-            instance.YMLMgr.WriteToYAML(player, toSet);
+            if (!instance.YMLMgr.playerAtHomeLimit(player)) {
+                String uuid = player.getUniqueId().toString();
+                String path = "homes." + uuid + "." + args[0];
 
-            return true;
+                toSet.put(path + ".world", player.getWorld().getName());
+                toSet.put(path + ".x", player.getX());
+                toSet.put(path + ".y", player.getY());
+                toSet.put(path + ".z", player.getZ());
+                
+                instance.YMLMgr.WriteToYAML(player, toSet);
+
+                return true;
+            } else {
+                sender.sendMessage("You are at max home limit!");
+            }
         }
 
         return true;
