@@ -3,8 +3,10 @@ package com.kasperskyy01.home.file;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -16,6 +18,7 @@ import com.kasperskyy01.home.HomePlugin;
 public class YAMLManager {
     @SuppressWarnings("null")
     public void WriteToYAML(Player player, HashMap<String, Object> list) {
+
         // Find the YAML File
         final HomePlugin instance = HomePlugin.getPlugin(HomePlugin.class);
 
@@ -51,20 +54,29 @@ public class YAMLManager {
         });
 
         // Done
+    
     }
 
     public boolean playerAtHomeLimit(Player player) {
+
         final HomePlugin instance = HomePlugin.getPlugin(HomePlugin.class);
         String uuid = player.getUniqueId().toString();
 
         FileConfiguration data = instance.getHomeYML();
-        int amountOfHomes = data.getConfigurationSection("homes." + uuid).getKeys(false).size();
+        ConfigurationSection plrHomes = data.getConfigurationSection("homes." + uuid);
+        if (plrHomes == null) { return false; }
+        Set<String> Data = plrHomes.getKeys(false); 
 
-        if (amountOfHomes > instance.getConfig().getInt("home-limit") - 1) {
-            return true;
-        } else {
+        if (Data.isEmpty()) {
             return false;
+        } else {
+            int amountOfHomes = Data.size();
+            if (amountOfHomes > instance.getConfig().getInt("home-limit") - 1) {
+                return true;
+            } else {
+                return false;
+            }
         }
-
+        
     }
 }

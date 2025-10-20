@@ -16,9 +16,10 @@ public class playerJoined implements Listener {
         HashMap<String, Object> toSet = new HashMap<String, Object>(); 
         Player joined = e.getPlayer();
         String uniqueID = joined.getUniqueId().toString();
-        String path = "homes." + uniqueID;
+
+
         // HashMap addons
-        toSet.put(path, null);
+        toSet.put("homes." + uniqueID, new HashMap<>());
         
         // Register player to the YAML File
         instance.YMLMgr.WriteToYAML(joined, toSet);

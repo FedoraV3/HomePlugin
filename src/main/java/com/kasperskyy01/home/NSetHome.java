@@ -12,7 +12,8 @@ public class NSetHome implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command _unused1, String _unused2, String[] args) {
         HashMap<String, Object> toSet = new HashMap<String, Object>();
-        if (sender instanceof Player) {
+        if (sender instanceof Player && sender.hasPermission("home.sethome")) {
+
             final HomePlugin instance = HomePlugin.getPlugin(HomePlugin.class);
             Player player = Bukkit.getPlayer(sender.getName());
             
@@ -27,10 +28,15 @@ public class NSetHome implements CommandExecutor {
                 
                 instance.YMLMgr.WriteToYAML(player, toSet);
 
+                sender.sendMessage("You have succesfully set your home " + args[0]);
+
                 return true;
             } else {
                 sender.sendMessage("You are at max home limit!");
             }
+
+        } else {
+            sender.sendMessage("Who are you?");
         }
 
         return true;
