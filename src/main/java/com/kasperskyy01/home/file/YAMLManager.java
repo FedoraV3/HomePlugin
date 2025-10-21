@@ -2,7 +2,9 @@ package com.kasperskyy01.home.file;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -28,14 +30,6 @@ public class YAMLManager {
         // Grab YML File
         FileConfiguration data = instance.getHomeYML();
 
-        // TODO: Move this somewhere so other modules can use this function
-        // Check for home limit
-        // int home = data.getKeys(false).size();
-        // if (home > instance.getConfig().getInt("home-limit") - 1 && data != null) {
-        //     player.sendMessage("You have the maximum limit of homes!");
-        //     return;
-        // }
-
         // Iterate over the list to set
         for (String i : list.keySet()) {
             String path = i;
@@ -55,6 +49,26 @@ public class YAMLManager {
 
         // Done
     
+    }
+
+    // TODO: Make this a dynamic function so that it works for other stuff too
+    public List<String> getLocation(String path) {
+        final HomePlugin instance = HomePlugin.getPlugin(HomePlugin.class);
+        FileConfiguration YAML = instance.getHomeYML();
+        List<String> result = new ArrayList<>();
+
+
+        // Get the YAML Content
+        ConfigurationSection data = YAML.getConfigurationSection(path);
+
+        // Get values
+        result.add((String) data.get(path + ".world"));
+        result.add((String) data.get(path + ".x"));
+        result.add((String) data.get(path + ".y"));
+        result.add((String) data.get(path + ".z"));       
+
+        // TODO: Fix this function
+        return result;
     }
 
     public boolean playerAtHomeLimit(Player player) {
