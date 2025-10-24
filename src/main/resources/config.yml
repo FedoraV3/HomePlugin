@@ -1,0 +1,10 @@
+# For developers only
+debug-mode: true
+
+# Set this to add a teleport delay
+teleport-delay: false
+# In seconds how much time til the player teleports to their home?
+teleport-away-in: 10
+
+# Logging filename (Don't touch if you don't know what you're doing)
+logging-filename: "VeeThreeLogs.log"

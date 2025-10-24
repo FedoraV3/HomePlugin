@@ -1,0 +1,23 @@
+name: HomePluginVeeThree
+version: '3.0-BETA'
+main: com.kasperskyy01.homePlugin
+api-version: '1.21'
+
+commands:
+  sethome:
+    description: "Set your home to the current location you are in"
+    usage: "/home [home-name]"
+    permission: sethome.use
+  home:
+    description: "Teleport to your home"
+    usage: "/home [home-name]"
+    permission: home.use
+
+
+permissions:
+  sethome.use:
+    description: "Allows usage of /sethome"
+    default: true
+  home.use:
+    description: "Allows players to teleport to their homes"
+    default: true
