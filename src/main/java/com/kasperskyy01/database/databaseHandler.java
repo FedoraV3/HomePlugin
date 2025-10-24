@@ -1,6 +1,6 @@
 package com.kasperskyy01.database;
 
-import com.kasperskyy01.data.HomeData;
+import com.kasperskyy01.data.Records;
 import com.kasperskyy01.homePlugin;
 
 import java.sql.Connection;
@@ -18,7 +18,7 @@ import org.bukkit.Location;
 public class databaseHandler {
     public String dbPath;
 
-    public Optional<HomeData> getPlayerHome(String uniqueID, String home) {
+    public Optional<Records> getPlayerHome(String uniqueID, String home) {
         try (
                 Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
                 Statement statement = connection.createStatement();
@@ -37,9 +37,9 @@ public class databaseHandler {
             double y = resolution.getDouble("y");
             double z = resolution.getDouble("z");
 
-            HomeData homeData = new HomeData(world, x, y, z);
+            Records records = new Records(world, x, y, z);
 
-            return Optional.of(homeData);
+            return Optional.of(records);
         } catch (SQLException e) {
             final homePlugin clazz = homePlugin.getPlugin(homePlugin.class);
             clazz.getLogger().severe(Arrays.toString(e.getStackTrace()));
