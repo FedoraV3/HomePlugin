@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 public class setHome implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        if (sender instanceof Player) {
+        if (sender instanceof Player && args.length > 0) {
 
             final homePlugin clazz = homePlugin.getPlugin(homePlugin.class);
             @SuppressWarnings("PatternVariableCanBeUsed") Player p100 = (Player) sender;

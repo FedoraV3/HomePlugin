@@ -15,12 +15,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
+@SuppressWarnings("deprecation")
 public class Home implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
-        if (sender instanceof Player) {
+        if (sender instanceof Player & args.length > 0) {
             final homePlugin instance = homePlugin.getPlugin(homePlugin.class);
-            @SuppressWarnings("PatternVariableCanBeUsed") Player p100 = (Player) sender;
+            Player p100 = (Player) sender;
             String UniqueID = p100.getUniqueId().toString();
             String homeName = args[0];
 

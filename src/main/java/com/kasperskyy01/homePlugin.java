@@ -28,14 +28,14 @@ public final class homePlugin extends JavaPlugin {
         dbHandler = new databaseHandler();
 
         // Initialization
-        // TODO: fix this dbpath shit to something reliable and better
         dbHandler.dbPath = getDataFolder() + "/homes.db";
         saveDefaultConfig();
-        dbHandler.initalizeDB();
+        dbHandler.initializeDB();
 
         // Commands
         this.getCommand("sethome").setExecutor(new setHome());
         this.getCommand("home").setExecutor(new Home());
+        this.getCommand("delhome").setExecutor(new delHome());
 
     }
 

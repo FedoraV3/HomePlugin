@@ -3,17 +3,12 @@ package com.kasperskyy01.database;
 import com.kasperskyy01.data.Records;
 import com.kasperskyy01.homePlugin;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Arrays;
 import java.util.Optional;
 
 import org.bukkit.Location;
 
-// Sowwy I chatgptted the DB commands
 @SuppressWarnings("UnnecessarySemicolon")
 public class databaseHandler {
     public String dbPath;
@@ -21,17 +16,20 @@ public class databaseHandler {
     public Optional<Records> getPlayerHome(String uniqueID, String home) {
         try (
                 Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
-                Statement statement = connection.createStatement();
         ) {
 
             // Query for the home
-            String query = String.format("SELECT x, y, z, world FROM home WHERE player = '%s' AND home_name = '%s';", uniqueID, home);
-            ResultSet resolution = statement.executeQuery(query);
+            String query = "SELECT x, y, z, world FROM home WHERE player = ? AND home_name = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, uniqueID);
+            ps.setString(2, home);
+
+            ResultSet resolution = ps.executeQuery();
 
             // Checks
             if (!resolution.next()) { return Optional.empty(); }
 
-            // Init record variable & read query results
+            // Init record variable and read query results
             String world = resolution.getString("world");
             double x = resolution.getDouble("x");
             double y = resolution.getDouble("y");
@@ -50,7 +48,6 @@ public class databaseHandler {
     public boolean setPlayerHome(String uniqueID, String homeName, Location l100) {
         try (
                 Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
-                Statement statement = connection.createStatement();
         ) {
 
             final homePlugin clazz = homePlugin.getPlugin(homePlugin.class);
@@ -59,8 +56,17 @@ public class databaseHandler {
             double z = l100.getZ();
             String world = l100.getWorld().getName();
 
-            String query = String.format("INSERT OR REPLACE INTO home (player, home_name, x, y, z, world) VALUES ('%s', '%s', %f, %f, %f, '%s');", uniqueID, homeName, x, y, z, world);
-            statement.executeUpdate(query);
+            String query = "INSERT OR REPLACE INTO home (player, home_name, x, y, z, world) VALUES (?, ?, ?, ?, ?, ?)";
+            PreparedStatement ps = connection.prepareStatement(query);
+
+            ps.setString(1, uniqueID);
+            ps.setString(2, homeName);
+            ps.setDouble(3, x);
+            ps.setDouble(4, y);
+            ps.setDouble(5, z);
+            ps.setString(6, world);
+
+            ps.executeUpdate();
 
             // Checking if it exists now that we created so if something happens, yeah
             if (getPlayerHome(uniqueID, homeName).isPresent()) {
@@ -79,9 +85,28 @@ public class databaseHandler {
         }
     }
 
+    public boolean deletePlayerHome(String uniqueID, String home) {
+        try (
+                Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
+        ) {
+            PreparedStatement ps = connection.prepareStatement("DELETE FROM home WHERE player = ? AND home_name = ?;");
+
+            ps.setString(1, uniqueID);
+            ps.setString(2, home);
+
+            ps.executeUpdate();
+
+            return true;
+        } catch (SQLException e) {
+            final homePlugin clazz = homePlugin.getPlugin(homePlugin.class);
+            clazz.getLogger().severe(Arrays.toString(e.getStackTrace()));
+            return false;
+        }
+    }
+
 
     @SuppressWarnings("UnnecessarySemicolon")
-    public void initalizeDB() {
+    public void initializeDB() {
         final homePlugin clazz = homePlugin.getPlugin(homePlugin.class);
         // It will always run
         try (

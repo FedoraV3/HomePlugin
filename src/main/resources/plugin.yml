@@ -12,6 +12,10 @@ commands:
     description: "Teleport to your home"
     usage: "/home [home-name]"
     permission: home.use
+  delhome:
+    description: "Delete a home"
+    usage: "/delhome [home-name]"
+    permission: delhome.use
 
 
 permissions:
@@ -20,4 +24,7 @@ permissions:
     default: true
   home.use:
     description: "Allows players to teleport to their homes"
+    default: true
+  delhome.use:
+    description: "Allow players to delete their homes"
     default: true
