@@ -5,6 +5,7 @@
 package com.kasperskyy01;
 
 import com.kasperskyy01.commands.*;
+import com.kasperskyy01.database.TabCompletion.TabCompletion;
 import com.kasperskyy01.database.databaseHandler;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -25,10 +26,9 @@ public final class homePlugin extends JavaPlugin {
         getLogger().info("[HomePlugin] Plugin has been enabled!");
 
         // Class
-        dbHandler = new databaseHandler();
+        dbHandler = new databaseHandler(getDataFolder() + "/homes.db");
 
         // Initialization
-        dbHandler.dbPath = getDataFolder() + "/homes.db";
         saveDefaultConfig();
         dbHandler.initializeDB();
 
@@ -37,6 +37,8 @@ public final class homePlugin extends JavaPlugin {
         this.getCommand("home").setExecutor(new Home());
         this.getCommand("delhome").setExecutor(new delHome());
 
+        // Tab Completers
+        this.getCommand("home").setTabCompleter(new TabCompletion());
     }
 
     @Override

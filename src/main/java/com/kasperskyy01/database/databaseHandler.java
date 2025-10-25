@@ -5,6 +5,7 @@ import com.kasperskyy01.homePlugin;
 
 import java.sql.*;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import org.bukkit.Location;
@@ -77,7 +78,6 @@ public class databaseHandler {
                 return false;
             }
 
-
         } catch (SQLException e) {
             final homePlugin clazz = homePlugin.getPlugin(homePlugin.class);
             clazz.getLogger().severe(Arrays.toString(e.getStackTrace()));
@@ -89,6 +89,7 @@ public class databaseHandler {
         try (
                 Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
         ) {
+
             PreparedStatement ps = connection.prepareStatement("DELETE FROM home WHERE player = ? AND home_name = ?;");
 
             ps.setString(1, uniqueID);
@@ -97,6 +98,7 @@ public class databaseHandler {
             ps.executeUpdate();
 
             return true;
+
         } catch (SQLException e) {
             final homePlugin clazz = homePlugin.getPlugin(homePlugin.class);
             clazz.getLogger().severe(Arrays.toString(e.getStackTrace()));
@@ -122,6 +124,33 @@ public class databaseHandler {
         } catch (SQLException e) {
             clazz.getLogger().severe(Arrays.toString(e.getStackTrace()));
         }
+    }
 
+    public Optional<List<String>> getHomes(String uniqueID) {
+        try (
+                Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
+        ) {
+
+            PreparedStatement ps = connection.prepareStatement("SELECT home_name FROM home WHERE player = ?;");
+            ps.setString(1, uniqueID);
+            ResultSet resolution = ps.executeQuery();
+            List<String> homes = List.of();
+
+            while (resolution.next()) {
+                homes = List.of(resolution.getString("home_name"));
+            }
+            return Optional.of(homes);
+
+        } catch (SQLException e) {
+            final homePlugin clazz = homePlugin.getPlugin(homePlugin.class);
+            clazz.getLogger().severe(Arrays.toString(e.getStackTrace()));
+        }
+
+        return Optional.empty();
+    }
+
+
+    public databaseHandler(String dbPath) {
+        this.dbPath = dbPath;
     }
 }
